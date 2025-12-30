@@ -8,7 +8,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {
   CartesianGrid,
   ComposedChart,
@@ -38,7 +38,8 @@ import {
 import { formatTickLabel, groupSeries, inDateRange, mean, type Granularity } from '../lib/time';
 
 export default function PatientDetail() {
-  const elderId = 'grandpa-wang';
+  const params = useParams();
+  const elderId = params.elderId ?? 'grandpa-wang';
   const elder = getElder(elderId);
 
   const today = new Date();
@@ -118,6 +119,14 @@ export default function PatientDetail() {
     [intervention.after],
   );
 
+  const goal = 70;
+  const goalHitRate = useMemo(() => {
+    const total = chartData.length || 0;
+    if (!total) return 0;
+    const hit = chartData.filter((d) => d.memoryMatch >= goal).length;
+    return Math.round((hit / total) * 100);
+  }, [chartData]);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -135,7 +144,7 @@ export default function PatientDetail() {
           <div className="mt-1 text-sm text-slate-600">
             {elder
               ? `${elder.age} 歲｜狀況：${elder.condition}｜資料來源：${elder.tags.join('、')}`
-              : '—'}
+              : `找不到長輩：${elderId}`}
           </div>
           <div className="mt-2 flex flex-wrap gap-2">
             <Badge variant="danger">近 3 天低互動警示</Badge>
@@ -199,10 +208,10 @@ export default function PatientDetail() {
                 <Legend />
                 <ReferenceLine
                   yAxisId="score"
-                  y={70}
+                  y={goal}
                   stroke="#059669"
                   strokeDasharray="4 4"
-                  label={{ value: '治療目標：70', fill: '#059669', fontSize: 12 }}
+                  label={{ value: `治療目標：${goal}`, fill: '#059669', fontSize: 12 }}
                 />
                 <Line
                   yAxisId="score"
@@ -231,6 +240,12 @@ export default function PatientDetail() {
               <div className="text-xs text-slate-500">記憶配對平均</div>
               <div className="mt-1 text-2xl font-semibold text-slate-900">
                 {Math.round(mean(chartData.map((d) => d.memoryMatch)))} 分
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <Badge variant={goalHitRate >= 60 ? 'success' : goalHitRate >= 40 ? 'warning' : 'danger'}>
+                  目標達成率：{goalHitRate}%
+                </Badge>
+                <Badge variant="neutral">目標：{goal} 分</Badge>
               </div>
               <div className="mt-2 text-xs text-slate-500">
                 依目前篩選（{granularity === 'day' ? '日' : granularity === 'week' ? '週' : '月'}

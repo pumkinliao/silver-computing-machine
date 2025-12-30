@@ -1,15 +1,15 @@
-import { Bell, Menu, Search } from 'lucide-react';
+import { Menu, Search } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { Badge } from './ui/Badge';
-import { alerts, mockAdmin } from '../mock/data';
+import { mockAdmin } from '../mock/data';
+import { NotificationsPopover } from './NotificationsPopover';
 
 export function HeaderBar({
   onOpenSidebar,
 }: {
   onOpenSidebar: () => void;
 }) {
-  const alertCount = alerts.length;
   return (
     <header className="sticky top-0 z-20 border-b border-jhk-line bg-white/80 backdrop-blur">
       <div className="flex items-center justify-between gap-4 px-4 py-3 lg:px-6">
@@ -32,17 +32,7 @@ export function HeaderBar({
         </div>
 
         <div className="flex items-center gap-3">
-          <button
-            className="relative grid h-10 w-10 place-items-center rounded-xl border border-jhk-line bg-white hover:bg-slate-50"
-            aria-label="通知"
-          >
-            <Bell className="h-5 w-5 text-slate-700" />
-            {alertCount > 0 ? (
-              <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-jhk-danger px-1 text-[10px] font-semibold text-white">
-                {alertCount}
-              </span>
-            ) : null}
-          </button>
+          <NotificationsPopover />
 
           <div className="flex items-center gap-3 rounded-2xl border border-jhk-line bg-white px-3 py-2">
             <div className="grid h-8 w-8 place-items-center rounded-xl bg-jhk-successSoft text-jhk-success">

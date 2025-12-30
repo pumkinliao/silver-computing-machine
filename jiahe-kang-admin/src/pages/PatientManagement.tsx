@@ -26,7 +26,7 @@ export default function PatientManagement() {
           {elders.map((e) => (
             <Link
               key={e.id}
-              to={e.id === 'grandpa-wang' ? '/patients/grandpa-wang' : '/patients'}
+              to={`/patients/${e.id}`}
               className="block rounded-2xl border border-jhk-line bg-white p-4 hover:bg-slate-50"
             >
               <div className="flex items-start justify-between gap-4">

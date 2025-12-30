@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
     children: [
       { path: '/', element: <DashboardOverview /> },
       { path: '/patients', element: <PatientManagement /> },
-      { path: '/patients/grandpa-wang', element: <PatientDetail /> },
+      { path: '/patients/:elderId', element: <PatientDetail /> },
       { path: '/care-logs', element: <CaregiverLogs /> },
       { path: '/analytics', element: <DataAnalytics /> },
       { path: '/settings', element: <Settings /> },

@@ -2,6 +2,7 @@ import { Activity, Bell, Users } from 'lucide-react';
 import { Badge } from '../components/ui/Badge';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { alerts, elders, getElder } from '../mock/data';
+import { Link } from 'react-router-dom';
 
 function MetricCard({
   title,
@@ -81,9 +82,10 @@ export default function DashboardOverview() {
                   ? 'warning'
                   : 'info';
             return (
-              <div
+              <Link
                 key={a.id}
-                className="flex items-start justify-between gap-3 rounded-2xl border border-jhk-line bg-white p-4"
+                to={`/patients/${a.elderId}`}
+                className="flex items-start justify-between gap-3 rounded-2xl border border-jhk-line bg-white p-4 hover:bg-slate-50"
               >
                 <div>
                   <div className="font-medium text-slate-900">
@@ -96,7 +98,7 @@ export default function DashboardOverview() {
                   </div>
                 </div>
                 <div className="text-right text-xs text-slate-500">更新：剛剛</div>
-              </div>
+              </Link>
             );
           })}
         </CardContent>
